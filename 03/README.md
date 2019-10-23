@@ -53,6 +53,9 @@ metadata:
   name: nginx
   namespace: app
 spec:
+  selector:
+    matchLabels:
+      app: nginx
   replicas: 2
   template:
     metadata:
@@ -113,6 +116,8 @@ nginx-677967c667-zbgl9   1/1     Running   0          12m
 
 ### 6. 確認方法３
 
+curl のインストール方法については第3回同様
+
 ```bash
 # curl インストール
 
@@ -150,7 +155,7 @@ Location: https://www.google.com
 
 ```
 
-### 10. deployment `nginx` を削除する
+### 7. deployment `nginx` を削除する
 
 ```bash
 ~$ kubectl -n app delete deployment nginx
