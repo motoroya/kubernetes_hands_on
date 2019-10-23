@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+  namespace: app
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      volumes:
+      - name: nginx-config
+        configMap:
+          name: nginx-config
+      containers:
+      - name: nginx
+        image: nginx:alpine
+        command: []
+        args: [
+          "nginx", "-c", "/etc/nginx/custom/custom.conf", "-g", "daemon off;"
+        ]
+        volumeMounts:
+          - name: nginx-config
+            mountPath: /etc/nginx/custom
