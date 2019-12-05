@@ -1,4 +1,4 @@
-## Kubernetes ハンズオン 第6回 nginx を sidecar に使用した deployment の作成
+## Kubernetes ハンズオン 第8回 nginx を sidecar に使用した deployment の作成
 
 
 ### 1. kubernetes-helm インストール
