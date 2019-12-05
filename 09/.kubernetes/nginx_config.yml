@@ -1,0 +1,53 @@
+apiVersion: v1
+data:
+  custom.conf: |2
+
+    user  nginx;
+    worker_processes  auto;
+
+    error_log  /var/log/nginx/error.log warn;
+    pid        /var/run/nginx.pid;
+
+
+    events {
+        worker_connections  1024;
+    }
+
+
+    http {
+        include       /etc/nginx/mime.types;
+        default_type  application/octet-stream;
+
+        log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                          '$status $body_bytes_sent "$http_referer" '
+                          '"$http_user_agent" "$http_x_forwarded_for"';
+
+        access_log  /var/log/nginx/access.log  main;
+
+        sendfile        on;
+        #tcp_nopush     on;
+
+        keepalive_timeout  65;
+
+        #gzip  on;
+
+        server {
+            listen 8080; # ここのnginxでlistenするportと合わせてください
+            server_name  _;
+
+            location / {
+                proxy_set_header    Host               $host;
+                proxy_set_header    X-Real-IP          $remote_addr;
+                proxy_set_header    X-Forwarded-For    $proxy_add_x_forwarded_for;
+                proxy_pass http://localhost:3030;
+            }
+        }
+    }
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2019-10-15T16:02:53Z"
+  name: nginx-config
+  namespace: app
+  resourceVersion: "4858"
+  selfLink: /api/v1/namespaces/app/configmaps/nginx-config
+  uid: 3ec36988-ef65-11e9-ad5a-08002707c257

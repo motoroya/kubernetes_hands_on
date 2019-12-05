@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rails
+  namespace: app
+spec:
+  selector:
+    matchLabels:
+      app: rails
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: rails
+    spec:
+      volumes:
+      - name: nginx-config
+        configMap:
+          name: nginx-config
+      containers:
+      - name: nginx
+        image: nginx:alpine
+        ports:
+          - containerPort: 8080
+        command: []
+        args: [
+          "nginx", "-c", "/etc/nginx/custom/custom.conf", "-g", "daemon off;"
+        ]
+        volumeMounts:
+          - name: nginx-config
+            mountPath: /etc/nginx/custom
+      - name: app
+        imagePullPolicy: IfNotPresent
+        image: 09_docker_k8s:latest
+        command: []
+        args: [
+          "bundle", "exec", "rails", "s", "-b", "0", "-p", "3030"
+        ]
