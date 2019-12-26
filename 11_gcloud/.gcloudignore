@@ -1,0 +1,13 @@
+.git
+.gitignore
+.dockerignore
+node_modules
+/docs
+/log/*
+/spec
+/tmp/*
+/doc
+.env*
+.rspec
+README.md
+/config/master.key

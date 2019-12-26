@@ -1,0 +1,14 @@
+.git
+.gitignore
+.dockerignore
+.kubernetes
+node_modules
+/doc
+/log/*
+/spec
+/test
+/tmp/*
+/docs
+*.yaml
+README.md
+/config/master.key
