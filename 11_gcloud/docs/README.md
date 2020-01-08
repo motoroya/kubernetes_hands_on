@@ -3,7 +3,11 @@
 # gcloud container clusters create koujou11
 
 
-# kubectl run koujou11-mysql --image=mysql:latest --env=MYSQL_ROOT_PASSWORD=1qa3ed5tg7uj9ol --port=3306
+# kubectl run koujou11-mysql --image=mysql:latest --env=MYSQL_ROOT_PASSWORD=1qa3ed5tg7uj9ol --env=MYSQL_USER=koujou11user --env=MYSQL_PASSWORD=koujou11ppaasswwoorrdd --port=3306 --command -- mysqld --user=root --password=1qa3ed5tg7uj9ol --character-set-server=utf8mb4 --collation-server=utf8mb4_bin
+# kubectl get deployment koujou11-mysql -o yaml > .kubernetes/koujou11-mysql.yaml
+
+
+
 # kubectl expose deployment koujou11-mysql  --type NodePort --target-port 3306
 # kubectl run ns --restart=Never --image=busybox:1.28 --rm -it --command -- nslookup koujou11-mysql
 Server:    10.15.240.10
@@ -57,7 +61,7 @@ Address: 10.15.250.22
        --command -- bundle exec rails console
        --command -- bundle exec rake db:migrate
 
-# kubectl run koujou11-migrate --restart=Never --image=11-rails:latest --rm  --env=RAILS_ENV=development --env=DB_HOST=koujou11-mysql  --env=DB_NAME=app_development --env=DB_PASS=1qa3ed5tg7uj9ol --env=DB_PORT=33060  --env=DB_USER=root --command -- bundle exec rails console
+# kubectl run koujou11-migrate --restart=Never --image=gcr.io/iron-dynamics-242723/11-app --rm -it --env=RAILS_ENV=development --env=DB_HOST=koujou11-mysql  --env=DB_NAME=app_development --env=DB_PASS=1qa3ed5tg7uj9ol --env=DB_PORT=33060  --env=DB_USER=root --command -- bundle exec rails console
  --command -- bundle exec rake db:migrate
 
 # docker-compose build
